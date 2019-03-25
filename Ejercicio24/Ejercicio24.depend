@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1553381011 source:/home/matias/Escritorio/Programming/Ejercicios del 2015/Ejercicio24/main.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+
