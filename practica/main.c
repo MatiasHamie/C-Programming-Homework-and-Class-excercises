@@ -4,7 +4,7 @@
 #define largoArrays 5
 
 int sortingMenue();
-int condicional(int opcionMenu, int i, int j, int legajos[], int nota1[], int nota2[], float promedios[]);
+int condicional(int opcionMenu, int i, int j, int legajos[], int nota1[], int nota2[], float promedios[], char sexos[]);
 
 int main()
 {
@@ -15,6 +15,7 @@ int main()
     int nota2[largoArrays]={3, 9, 2, 5, 8};
     float auxFloat;
     float promedios[largoArrays]={6, 6.5, 3.5, 4.5, 8};
+    char sexos[largoArrays]={'f','m','m','m','f'};
 
     printf("*** Practica de arrays ***\n");
     printf("\n    *** Arrays sin ordenar ***\n");

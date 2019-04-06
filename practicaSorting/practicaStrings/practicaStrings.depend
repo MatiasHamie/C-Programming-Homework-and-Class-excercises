@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1554509692 source:d:\lenguaje-c\practicasorting\practicastrings\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
