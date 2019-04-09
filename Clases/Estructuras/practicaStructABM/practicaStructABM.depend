@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1554781953 source:c:\users\yotut\desktop\programming\estructuras\practicastructabm\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
