@@ -17,10 +17,15 @@ typedef struct
 
 } Eempleado;
 
+int menuPrincipal();
 void pedirDatos(Eempleado listaEmpleados[],int );
 void mostrarDatos(Eempleado listaEmpleados[],int );
 int buscarVacio(Eempleado listaEmpleados[],int );
 void buscarEmpleado(int opcionBusqueda,Eempleado listaEmpleados[],int );
+void buscarLegajo(int auxInt,Eempleado listaEmpleados[],int tam);
+void buscarSexo(char auxChar,Eempleado listaEmpleados[],int tam);
+void buscarSueldo(float auxFloatMinimo,float auxFloatMaximo,Eempleado listaEmpleados[],int tam);
+void buscarNombre(char auxCadena[],Eempleado listaEmpleados[],int tam);
 
 int main()
 {
@@ -35,11 +40,7 @@ int main()
 
     do
     {
-        printf("1. Agregar empleado\n");
-        printf("2. Mostrar empleados ingresados\n");
-        printf("3. Buscar y mostrar empleado buscado\n");
-        printf("4. Salir\n");
-        scanf("%d",&opcion);
+        opcion=menuPrincipal();
 
         switch(opcion)
         {
@@ -56,14 +57,13 @@ int main()
                 printf("1. Nombre\n");
                 printf("2. Legajo\n");
                 printf("3. Sexo\n");
-                printf("4. Nombre\n");
+                printf("4. Sueldo\n");
                 scanf("%d",&opcionBusqueda);
                 buscarEmpleado(opcionBusqueda,listaEmpleados,LARGO);
                 break;
         }
         system("cls");
     }while(opcion!=3);
-
 
     return 0;
 }
@@ -147,7 +147,7 @@ int buscarVacio(Eempleado listaEmpleados[],int tam)
 
     for(int i=0;i<tam;i++)
     {
-        if(listaEmpleados[i].estado==VACIO)printf("Nombre: %s Sexo: %c Legajo: %d Sueldo: %.2f\n",listaEmpleados[i].nombre,listaEmpleados[i].sexo,listaEmpleados[i].legajo,listaEmpleados[i].sueldo);
+        if(listaEmpleados[i].estado==VACIO)
         {
             indiceVacio=i;
             break;
@@ -160,11 +160,13 @@ int buscarVacio(Eempleado listaEmpleados[],int tam)
 void buscarEmpleado(int opcionBusqueda,Eempleado listaEmpleados[],int tam)
 {
     char auxCadena[100];
-//    char auxChar;
-//    int auxInt;
-//    float auxFloat;
+    int auxInt;
+    int seguir;
+    char auxChar;
+    float auxFloatMinimo;
+    float auxFloatMaximo;
 
-    for(int i=0;i<tam;i++)
+    do
     {
         switch(opcionBusqueda)
         {
@@ -172,12 +174,115 @@ void buscarEmpleado(int opcionBusqueda,Eempleado listaEmpleados[],int tam)
                 system("cls");
                 printf("Ingrese el nombre del empleado: \n");
                 scanf("%s",auxCadena);
-                if(stricmp(auxCadena,listaEmpleados[i].nombre)==0)
-                {
-                    printf("Nombre: %s Sexo: %c Legajo: %d Sueldo: %.2f\n",listaEmpleados[i].nombre,listaEmpleados[i].sexo,listaEmpleados[i].legajo,listaEmpleados[i].sueldo);
-                    system("pause");
-                }
+                buscarNombre(auxCadena,listaEmpleados,3);
                 break;
+            case 2:
+                system("cls");
+                printf("Ingrese el legajo del empleado: \n");
+                scanf("%d",&auxInt);
+                buscarLegajo(auxInt,listaEmpleados,3);
+                break;
+            case 3:
+                system("cls");
+                printf("Ingrese el sexo de los empleados a buscar: \n");
+                scanf("%c",&auxChar);
+                buscarSexo(auxChar,listaEmpleados,3);
+                break;
+            case 4:
+                system("cls");
+                printf("Ingrese el rango de sueldos de empleados a buscar: \n");
+                printf("Desde: (Ingrese sueldo minimo)");
+                scanf("%f",&auxFloatMinimo);
+                printf("Hasta: (Ingrese sueldo maximo)");
+                scanf("%f",&auxFloatMaximo);
+                buscarSueldo(auxFloatMinimo,auxFloatMaximo,listaEmpleados,3);
+        }
+        printf("\nIngrese una opcion\n");
+        printf("1. Seguir buscando\n");
+        printf("2. Finalizar e ir al menu principal\n");
+        printf("3. Finalizar\n");
+        fflush(stdin);
+        scanf("%d",&seguir);
+    }while(seguir==1);
+}
+
+int menuPrincipal()
+{
+    int opcion;
+
+    printf("1. Agregar empleado\n");
+    printf("2. Mostrar empleados ingresados\n");
+    printf("3. Buscar y mostrar empleado buscado\n");
+    printf("4. Salir\n");
+    scanf("%d",&opcion);
+
+    return opcion;
+}
+
+void buscarNombre(char auxCadena[],Eempleado listaEmpleados[],int tam)
+{
+    for(int i=0;i<LARGO;i++)
+    {
+        if(stricmp(listaEmpleados[i].nombre,auxCadena)==0)
+        {
+            printf("Nombre: %s Sexo: %c Legajo: %d Sueldo: %.2f\n",listaEmpleados[i].nombre,listaEmpleados[i].sexo,listaEmpleados[i].legajo,listaEmpleados[i].sueldo);
+            system("pause");
+            break;
+        }
+        else
+        {
+            printf("No se ha encontrado el nombre del empleado en nuestra base de datos");
+        }
+    }
+}
+
+void buscarLegajo(int auxInt,Eempleado listaEmpleados[],int tam)
+{
+    for(int i=0;i<LARGO;i++)
+    {
+        if(auxInt==listaEmpleados[i].legajo)
+        {
+            printf("Nombre: %s Sexo: %c Legajo: %d Sueldo: %.2f\n",listaEmpleados[i].nombre,listaEmpleados[i].sexo,listaEmpleados[i].legajo,listaEmpleados[i].sueldo);
+            system("pause");
+            break;
+        }
+        else
+        {
+            printf("No se ha encontrado el legajo del empleado en nuestra base de datos");
+        }
+    }
+}
+
+void buscarSexo(char auxChar,Eempleado listaEmpleados[],int tam)
+{
+    for(int i=0;i<LARGO;i++)
+    {
+        if(auxChar==listaEmpleados[i].sexo)
+        {
+            printf("Nombre: %s Sexo: %c Legajo: %d Sueldo: %.2f\n",listaEmpleados[i].nombre,listaEmpleados[i].sexo,listaEmpleados[i].legajo,listaEmpleados[i].sueldo);
+            system("pause");
+            break;
+        }
+        else
+        {
+            printf("No se ha encontrado el sexo: %c en nuestra base de datos",auxChar);
+        }
+    }
+}
+
+void buscarSueldo(float auxFloatMinimo,float auxFloatMaximo,Eempleado listaEmpleados[],int tam)
+{
+    for(int i=0;i<LARGO;i++)
+    {
+        if(listaEmpleados[i].sueldo>auxFloatMinimo && listaEmpleados[i].sueldo<auxFloatMaximo)
+        {
+            printf("Nombre: %s Sexo: %c Legajo: %d Sueldo: %.2f\n",listaEmpleados[i].nombre,listaEmpleados[i].sexo,listaEmpleados[i].legajo,listaEmpleados[i].sueldo);
+            system("pause");
+            break;
+        }
+        else
+        {
+            printf("No se ha encontrado el sueldo en nuestra base de datos");
         }
     }
 }
