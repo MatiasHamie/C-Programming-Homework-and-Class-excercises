@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1556484321 source:c:\users\yotut\desktop\programming\estructuras\abm_id_estructura\main.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	<conio.h>
+	<string.h>
+
