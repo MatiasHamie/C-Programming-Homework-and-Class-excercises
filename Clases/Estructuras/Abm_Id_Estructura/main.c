@@ -58,6 +58,7 @@ typedef struct
 int  menuPrincipal();
 int  menuBusqueda();
 int  menuInformes();
+int  menuSorting();
 int  buscarVacio(eEmpleado vec[],int tam);
 int  buscarSectorVacio(eSector sector[],int tamSec);
 int  buscarLegajo(eEmpleado vec[], int tam);
@@ -67,6 +68,7 @@ int  buscarEmpleado(eEmpleado vec[],int tam, eSector sector[],int tamSec);
 int  obtenerSector(int idEmpleado, eSector sectores[], int tamSec, char auxDescID[]);
 int  obtenerAlmuerzoEmpleado(eAlmuerzo almuerzo, eEmpleado vec[], int tam, char nombreEmp[], char apellidoEmp[]);
 int  obtenerAlmuerzoComida(eAlmuerzo almuerzo, eComida comidas[], int tamCom, char nombreCom[]);
+int  obtenerLegajoEmpAlmuerzo(eAlmuerzo almuerzo,eEmpleado vec[],int tam);
 void buscarSexo(eEmpleado vec[], int tam, eSector sectores[], int tamSec);
 void inicializarEstadoEmpleados(eEmpleado vec[],int tam);
 void hardCodearEmpleados(eEmpleado vec[],int tam);
@@ -83,11 +85,13 @@ void mostrarAlmuerzo(eAlmuerzo almuerzo,eEmpleado vec[],int tam,eComida comidas[
 void mostrarAlmuerzos(eAlmuerzo almuerzos[], int tamAlm , eEmpleado vec[], int tam, eComida comidas[], int tamCom);
 void mostrarSectores(eSector sectores[], int tamSec);
 void mostrarComidas(eComida comidas[], int tamCom);
-void mostrarInforme(eEmpleado vec[],int tam, eSector sectores[],int tamSec);
+void mostrarInforme(eEmpleado vec[],int tam, eSector sectores[],int tamSec, eComida comidas[],int tamCom, eAlmuerzo almuerzos[],int tamAlm);
 void informeEmpPorSector(eEmpleado vec[],int tam, eSector sector[],int tamSec);
 void informeCantEmpPorSector(eEmpleado vec[],int tam, eSector sector[],int tamSec);
 void informeMaxSueldoEmpPorSector(eEmpleado vec[],int tam, eSector sector[],int tamSec);
 void informePromedioSueldosPorSector(eEmpleado vec[],int tam, eSector sector[],int tamSec);
+void informeAlmuerzosPorPersona(eAlmuerzo almuerzos[], int tamAlm , eEmpleado vec[], int tam, eComida comidas[], int tamCom);
+void informeComidaPorPersona(eAlmuerzo almuerzos[], int tamAlm , eEmpleado vec[], int tam, eComida comidas[], int tamCom);
 
 int main()
 {
@@ -113,12 +117,10 @@ int main()
         switch(menuPrincipal())
         {
             case 1:
-                //printf("1- Alta empleado\n");
                 altaEmpleado(listaEmpleados,TAM,listaSectores,TAMSEC);
                 system("pause");
                 break;
             case 2:
-                //printf("2- Baja empleado\n");
                 bajaEmpleado(listaEmpleados,TAM,listaSectores,TAMSEC);
                 system("pause");
                 break;
@@ -128,41 +130,37 @@ int main()
                 break;
             case 4:
                 mostrarEmpleados(listaEmpleados,TAM,listaSectores,TAMSEC);
-                //printf("1- Listar empleado\n");
                 system("pause");
                 break;
             case 5:
-                //printf("5- Buscar Empleado\n");
                 altaSector(listaSectores,TAMSEC);
                 system("pause");
                 break;
             case 6:
-                //printf("5- Buscar Empleado\n");
                 mostrarSectores(listaSectores,TAMSEC);
                 system("pause");
                 break;
             case 7:
-                //printf("5- Buscar Empleado\n");
                 buscarEmpleado(listaEmpleados,TAM,listaSectores,TAMSEC);
                 system("pause");
                 break;
             case 8:
-                //printf("5- Buscar Empleado\n");
                 mostrarAlmuerzos(listaAlmuerzos,TAMALM,listaEmpleados,TAM,listaComidas,TAMCOM);
                 system("pause");
                 break;
             case 9:
-                //printf("5- Buscar Empleado\n");
                 mostrarComidas(listaComidas,TAMCOM);
                 system("pause");
                 break;
             case 10:
-                //printf("5- Buscar Empleado\n");
-                mostrarInforme(listaEmpleados,TAM,listaSectores,TAMSEC);
+                mostrarInforme(listaEmpleados,TAM,listaSectores,TAMSEC,listaComidas,TAMCOM,listaAlmuerzos,TAMALM);
                 system("pause");
                 break;
             case 11:
-                //printf("6- Salir\n");
+
+                system("pause");
+                break;
+            case 12:
                 printf("Esta seguro que desea salir? s/n\n");
                 fflush(stdin);
                 confirma=getche();
@@ -546,7 +544,7 @@ void mostrarSectores(eSector sectores[], int tamSec)
     }
 }
 
-void mostrarInforme(eEmpleado vec[],int tam, eSector sectores[],int tamSec)
+void mostrarInforme(eEmpleado vec[],int tam, eSector sectores[],int tamSec, eComida comidas[],int tamCom, eAlmuerzo almuerzos[],int tamAlm)
 {
     system("cls");
 
@@ -564,6 +562,12 @@ void mostrarInforme(eEmpleado vec[],int tam, eSector sectores[],int tamSec)
         case 4:
             informePromedioSueldosPorSector(vec,TAM,sectores,TAMSEC);
             break;
+        case 5:
+            informeAlmuerzosPorPersona(almuerzos,TAMALM,vec,TAM,comidas,TAMCOM);
+            break;
+        case 6:
+            informeComidaPorPersona(almuerzos,TAMALM,vec,TAM,comidas,TAMCOM);
+            break;
         default:
             printf("Opcion invalida");
     }
@@ -580,6 +584,8 @@ int menuInformes()
     printf("2- Lista de cantidad de empleados por sector\n");
     printf("3- Lista de empleados con mayor sueldo por sector\n");
     printf("4- Lista de promedio de sueldos por sector\n");
+    printf("5- Lista Almuerzos por empleado\n");
+    printf("6- Lista Comidas por empleado\n");
     printf("\nIngrese opcion: ");
     scanf("%d",&opcion);
 
@@ -785,7 +791,7 @@ void mostrarAlmuerzo(eAlmuerzo almuerzo,eEmpleado vec[],int tam,eComida comidas[
 
     if(indiceCoincideIDEmp && indiceCoincideIDCom)
     {
-        printf("%d %8s %8s %8s\n",almuerzo.id,nombreEmpleado,apellidoEmpleado,nombreComida);
+        printf("%d %8s %8s %8s   %02d/%02d/%02d\n",almuerzo.id,nombreEmpleado,apellidoEmpleado,nombreComida,almuerzo.fecha.dia,almuerzo.fecha.mes,almuerzo.fecha.anno);
     }
     else
     {
@@ -798,7 +804,8 @@ void mostrarAlmuerzos(eAlmuerzo almuerzos[], int tamAlm , eEmpleado vec[], int t
     system("cls");
 
     printf("*** Almuerzos ***\n\n");
-    printf("%s %8s %8s %8s\n","ID","NOMBRE","APELLIDO","COMIDA");
+    printf("%s %8s %8s %8s %8s \n","ID","NOMBRE","APELLIDO","COMIDA","FECHA");
+    printf("%s %8s %8s %8s %8s \n","--","------","--------","------","-----");
 
     for(int i=0;i<tamAlm;i++)
     {
@@ -849,4 +856,75 @@ int obtenerAlmuerzoComida(eAlmuerzo almuerzo, eComida comidas[], int tamCom, cha
         }
     }
     return esta;
+}
+
+void informeAlmuerzosPorPersona(eAlmuerzo almuerzos[], int tamAlm , eEmpleado vec[], int tam, eComida comidas[], int tamCom)
+{
+    system("cls");
+    printf("*** Almuerzos por persona***\n\n");
+
+    for(int i=0;i<tam;i++)
+    {
+        printf("\n%s %8s %8s %8s\n","ID","NOMBRE","APELLIDO","COMIDA");
+
+        for(int j=0;j<tamAlm;j++)
+        {
+            if(almuerzos[j].legajoEmp==vec[i].legajo)
+            {
+                mostrarAlmuerzo(almuerzos[j],vec,TAM,comidas,TAMCOM);
+            }
+        }
+    }
+}
+
+void informeComidaPorPersona(eAlmuerzo almuerzos[], int tamAlm , eEmpleado vec[], int tam, eComida comidas[], int tamCom)
+{
+    int indiceEmpleado;
+
+    for(int i=0;i<tamCom;i++)
+    {
+        printf("\nComida: %s\n\n",comidas[i].descripcion);
+        for(int j=0;j<tamAlm;j++)
+        {
+            if(almuerzos[j].idComida==comidas[i].id)
+            {
+                indiceEmpleado=obtenerLegajoEmpAlmuerzo(almuerzos[j],vec,TAM);
+                printf("%s %s\n",vec[indiceEmpleado].nombre,vec[indiceEmpleado].apellido);
+            }
+        }
+    }
+}
+
+int obtenerLegajoEmpAlmuerzo(eAlmuerzo almuerzo,eEmpleado vec[],int tam)
+{
+    int indice;
+
+    for(int i=0;i<tam;i++)
+    {
+        if(almuerzo.legajoEmp==vec[i].legajo)
+        {
+            indice=i;
+            break;
+        }
+    }
+
+    return indice;
+}
+
+int menuSorting()
+{
+    int opcion;
+
+    system("cls");
+
+    printf("Ordenar por:\n\n");
+    printf("1- Fecha de ingreso\n");
+    printf("2- Nombre\n");
+    printf("3- Apellido\n");
+    printf("4- Legajo\n");
+    printf("5- Sueldo\n");
+    printf("\nIngrese opcion: ");
+    scanf("%d",&opcion);
+
+    return opcion;
 }
